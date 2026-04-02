@@ -26,21 +26,15 @@ func NewGameHandler(
 	}
 }
 
-// Run executes the full game flow
 func (h *GameHandler) Run() {
-	// 1. create deck & shuffle
 	h.deckService.CreateDeck()
 	h.deckService.Shuffle()
-
-	// 2. deal 4 players x 5 cards
 	h.deckService.Deal(4, 5)
 
-	// 3. evaluate all hands
 	players := h.repo.GetPlayers()
 	players = h.gameService.EvaluateAllHands(players)
 	h.repo.SavePlayers(players)
 
-	// 4. print each player's hand
 	for _, p := range players {
 		var cards []string
 		for _, c := range p.Cards {
@@ -49,11 +43,9 @@ func (h *GameHandler) Run() {
 		fmt.Printf("%s: %s -> %s\n", p.Name, strings.Join(cards, " "), p.Hand.Name)
 	}
 
-	// 5. print cards left
 	deck := h.repo.GetDeck()
 	fmt.Printf("\nCards left in deck: %d\n", len(deck.Cards))
 
-	// 6. determine and print winner(s)
 	winners := h.gameService.DetermineWinners(players)
 	if len(winners) == 1 {
 		fmt.Printf("\n*** Winner is %s with %s! ***\n", winners[0].Name, winners[0].Hand.Name)

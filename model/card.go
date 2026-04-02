@@ -2,7 +2,6 @@ package model
 
 var Suits = []string{"Spades", "Hearts", "Diamonds", "Clubs"}
 
-// Rank of card 2-14(J=11, Q=12,K=13, A=14)
 var RankNames = map[int]string{
 	2:  "2",
 	3:  "3",
