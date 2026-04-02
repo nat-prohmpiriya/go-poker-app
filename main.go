@@ -7,13 +7,12 @@ import (
 )
 
 func main() {
-	// init layers
 	repo := repository.NewGameRepository()
 	deckService := service.NewDeckService(repo)
 	handService := service.NewHandService()
-	gameService := service.NewGameService(handService)
-	gameHandler := handler.NewGameHandler(deckService, gameService, repo)
+	gameService := service.NewGameService(handService, repo)
+	gameHandler := handler.NewGameHandler(deckService, gameService)
 
-	// run game
+
 	gameHandler.Run()
 }
