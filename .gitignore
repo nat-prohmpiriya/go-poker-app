@@ -1,0 +1,13 @@
+# Binary
+poker-app
+*.exe
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Go
+vendor/
