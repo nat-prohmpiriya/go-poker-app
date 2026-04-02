@@ -2,11 +2,12 @@ package service
 
 import (
 	"poker-app/model"
+	"poker-app/repository"
 	"testing"
 )
 
 func TestDetermineWinnersDifferentRank(t *testing.T) {
-	s := NewGameService(NewHandService())
+	s := NewGameService(NewHandService(), repository.NewGameRepository())
 
 	players := []model.Player{
 		{Name: "Player 1", Hand: model.Hand{Rank: 6, Name: "Flush", TieBreak: []int{14, 10, 5, 3, 2}}},
@@ -23,7 +24,7 @@ func TestDetermineWinnersDifferentRank(t *testing.T) {
 }
 
 func TestDetermineWinnersTieBreak(t *testing.T) {
-	s := NewGameService(NewHandService())
+	s := NewGameService(NewHandService(), repository.NewGameRepository())
 
 	// both One Pair but Player 1 has higher pair (K vs J)
 	players := []model.Player{
@@ -39,7 +40,7 @@ func TestDetermineWinnersTieBreak(t *testing.T) {
 }
 
 func TestDetermineWinnersTieBreakKicker(t *testing.T) {
-	s := NewGameService(NewHandService())
+	s := NewGameService(NewHandService(), repository.NewGameRepository())
 
 	// same pair (K) but Player 2 has higher kicker (A vs Q)
 	players := []model.Player{
@@ -55,7 +56,7 @@ func TestDetermineWinnersTieBreakKicker(t *testing.T) {
 }
 
 func TestDetermineWinnersTie(t *testing.T) {
-	s := NewGameService(NewHandService())
+	s := NewGameService(NewHandService(), repository.NewGameRepository())
 
 	// exact same tiebreak = tie
 	players := []model.Player{

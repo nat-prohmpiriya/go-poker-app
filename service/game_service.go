@@ -1,13 +1,25 @@
 package service
 
-import "poker-app/model"
+import (
+	"poker-app/model"
+	"poker-app/repository"
+)
 
 type GameService struct {
 	handService *HandService
+	repo        *repository.GameRepository
 }
 
-func NewGameService(handService *HandService) *GameService {
-	return &GameService{handService: handService}
+func NewGameService(handService *HandService, repo *repository.GameRepository) *GameService {
+	return &GameService{handService: handService, repo: repo}
+}
+
+func (s *GameService) GetPlayers() []model.Player {
+	return s.repo.GetPlayers()
+}
+
+func (s *GameService) SavePlayers(players []model.Player) {
+	s.repo.SavePlayers(players)
 }
 
 func (s *GameService) EvaluateAllHands(players []model.Player) []model.Player {

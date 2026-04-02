@@ -59,6 +59,10 @@ func (s *DeckService) InitPlayers(numPlayers int) {
 	s.repo.SavePlayers(players)
 }
 
+func (s *DeckService) GetCardsLeft() int {
+	return len(s.repo.GetDeck().Cards)
+}
+
 func (s *DeckService) DrawOne(playerIndex int) model.Card {
 	deck := s.repo.GetDeck()
 	players := s.repo.GetPlayers()
