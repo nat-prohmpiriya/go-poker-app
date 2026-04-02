@@ -33,7 +33,7 @@ func (s *DeckService) Shuffle() {
 	s.repo.SaveDeck(deck)
 }
 
-// แจกไพ่ให้ผู้เล่น 4 คน คนละ ห้าใบ
+// Deal deals cards to all players at once (5 cards each)
 func (s *DeckService) Deal(numPlayers, cardsPerPlayer int) {
 	deck := s.repo.GetDeck()
 	var players []model.Player
@@ -48,4 +48,34 @@ func (s *DeckService) Deal(numPlayers, cardsPerPlayer int) {
 	}
 	s.repo.SaveDeck(deck)
 	s.repo.SavePlayers(players)
+}
+
+// InitPlayers creates empty players before drawing
+func (s *DeckService) InitPlayers(numPlayers int) {
+	var players []model.Player
+	for i := 0; i < numPlayers; i++ {
+		players = append(players, model.Player{
+			Name: fmt.Sprintf("Player %d", i+1),
+		})
+	}
+	s.repo.SavePlayers(players)
+}
+
+// DrawOne draws 1 card from deck for a specific player
+// returns the drawn card
+func (s *DeckService) DrawOne(playerIndex int) model.Card {
+	deck := s.repo.GetDeck()
+	players := s.repo.GetPlayers()
+
+	// take top card from deck
+	card := deck.Cards[0]
+	deck.Cards = deck.Cards[1:]
+
+	// add to player's hand
+	players[playerIndex].Cards = append(players[playerIndex].Cards, card)
+
+	s.repo.SaveDeck(deck)
+	s.repo.SavePlayers(players)
+
+	return card
 }
